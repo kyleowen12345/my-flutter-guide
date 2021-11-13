@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class Lists with ChangeNotifier {
   final List<Map<String, Object>> _todos =  [{'name':'juices','completed':false},{'name':'coke','completed':false},{'name':'jews','completed':false}];
-
   
+
   List<Map<String, Object>> get todos => _todos;
 
   void addToList(Map<String, Object> list) {
@@ -18,14 +18,8 @@ class Lists with ChangeNotifier {
 
   void updateTodoInAList(Map<String, Object> list) {
    int todoIndex = _todos.indexWhere((element) => element == list);
-   _todos[todoIndex] = {..._todos[todoIndex],'completed':true};
+   _todos[todoIndex] = {..._todos[todoIndex],'completed':list['completed'] == false ? true : false  };
+  //  print(!_todos[todoIndex]['completed']);
     notifyListeners();
   }
-
-  
-
-  // void reset() {
-  //   _count = 0;
-  //   notifyListeners();
-  // }
 }

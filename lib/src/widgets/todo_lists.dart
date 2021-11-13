@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:wordpaircrap/src/providers/list_provider.dart';
 
 class TodoList extends StatefulWidget {
- 
-  const  TodoList({Key? key,    }) : super(key: key);
+  final List<Map<String, Object>> todos;
+  const  TodoList({Key? key, required this.todos   }) : super(key: key);
 
   @override
   _TodoListState createState() => _TodoListState();
@@ -15,7 +15,6 @@ class _TodoListState extends State<TodoList> {
 
   @override
   Widget build(BuildContext context) {
-    
     return Expanded(
               child: ListView.separated(
               itemBuilder: (BuildContext context, int index) {
@@ -33,12 +32,13 @@ class _TodoListState extends State<TodoList> {
                           Container(
                             constraints:const BoxConstraints(maxWidth: 100),
                             child: Text(
-                              context.watch<Lists>().todos[index]["name"].toString(),
+                              widget.todos[index]["name"].toString(),
                               overflow: TextOverflow.ellipsis,
                               maxLines: 1,
                               softWrap: false,
-                              style:const TextStyle(
-                                 fontSize:20
+                              style: TextStyle(
+                                 fontSize:20,
+                                 decoration: widget.todos[index]["completed"] == true ? TextDecoration.lineThrough : TextDecoration.none
                               ),
                               ),
                           ),
@@ -65,9 +65,17 @@ class _TodoListState extends State<TodoList> {
 
                                     // });
                                     context.read<Lists>().updateTodoInAList(Provider.of<Lists>(context,listen: false).todos[index]);
+                                    
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                          action: SnackBarAction(label:widget.todos[index]["completed"] == true ? 'Saved' : 'Unsaved', onPressed: (){}),
+                                          content: Text(widget.todos[index]["name"].toString() )
+                                    )
+                                    );
+                                    
                                   },
-                                  icon:const Icon(
-                                    Icons.save,
+                                  icon: Icon(
+                                   widget.todos[index]["completed"] == false ? Icons.add_circle : Icons.undo_outlined,
                                     color:Colors.green
                                   ),
                                   padding:const EdgeInsets.fromLTRB(0, 13.0, 0, 0),
@@ -79,7 +87,7 @@ class _TodoListState extends State<TodoList> {
                     ]),
                 );
               },
-              itemCount: context.watch<Lists>().todos.length,
+              itemCount: widget.todos.length,
               separatorBuilder: (BuildContext context, int index) => const Divider(),
             )
             );

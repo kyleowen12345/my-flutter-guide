@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:wordpaircrap/src/providers/list_provider.dart';
 import 'package:wordpaircrap/src/widgets/todo_lists.dart';
 import 'package:wordpaircrap/src/widgets/form.dart';
+import 'package:wordpaircrap/src/widgets/navigation_drawer.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -19,20 +20,20 @@ final List<Map<String, Object>> todos =  [{'name':'juices','completed':false},{'
  
   @override
   Widget build(BuildContext context) {
-    print(context.watch<Lists>().todos);
     var container = Container(
         margin:const EdgeInsets.symmetric(vertical: 10.0,horizontal: 15.0),
         child: Column(
-          children:const [ 
-             MyForm(),
-            TodoList()
+          children: [ 
+            const MyForm(),
+            TodoList(todos:context.watch<Lists>().todos)
             
           ]
         ),
       );
     return Scaffold(
+      drawer:const NavbarDrawer(),
       appBar: AppBar(
-        title: const Text('Form Samples'),
+        title: const Text('Todo List'),
       ),
       body: container
       

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wordpaircrap/src/providers/list_provider.dart';
 import 'package:wordpaircrap/src/screens/home_screen.dart';
-
+import 'package:wordpaircrap/src/screens/completed_list.dart';
 void main() {
   runApp( 
     MultiProvider(
@@ -12,7 +12,9 @@ void main() {
           ),
       ],
       child:const MyApp(),
-    ),);
+    ),
+    
+    );
 }
 
 class MyApp extends StatelessWidget {
@@ -24,7 +26,11 @@ class MyApp extends StatelessWidget {
     return  MaterialApp(
       title: 'Startup Name Generator',
       theme: ThemeData(primarySwatch: Colors.teal), 
-      home:const HomePage()
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const HomePage(),
+        '/completedtodos':(context) => const CompletedTodoInList(),
+      },
     );
   }
 }
